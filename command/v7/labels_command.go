@@ -12,22 +12,6 @@ import (
 	"code.cloudfoundry.org/cli/v8/util/ui"
 )
 
-type ResourceType string
-
-const (
-	App             ResourceType = "app"
-	Buildpack       ResourceType = "buildpack"
-	Domain          ResourceType = "domain"
-	Org             ResourceType = "org"
-	Route           ResourceType = "route"
-	Space           ResourceType = "space"
-	Stack           ResourceType = "stack"
-	ServiceBroker   ResourceType = "service-broker"
-	ServiceInstance ResourceType = "service-instance"
-	ServiceOffering ResourceType = "service-offering"
-	ServicePlan     ResourceType = "service-plan"
-)
-
 type LabelsCommand struct {
 	BaseCommand
 
@@ -64,37 +48,37 @@ func (cmd LabelsCommand) Execute(args []string) error {
 	}
 
 	switch cmd.canonicalResourceTypeForName() {
-	case App:
+	case flag.AppResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		labels, warnings, err = cmd.Actor.GetApplicationLabels(cmd.RequiredArgs.ResourceName, cmd.Config.TargetedSpace().GUID)
-	case Buildpack:
+	case flag.BuildpackResourceType:
 		cmd.displayMessageWithStackAndLifecycle()
 		labels, warnings, err = cmd.Actor.GetBuildpackLabels(cmd.RequiredArgs.ResourceName, cmd.BuildpackStack, cmd.BuildpackLifecycle)
-	case Domain:
+	case flag.DomainResourceType:
 		cmd.displayMessageDefault()
 		labels, warnings, err = cmd.Actor.GetDomainLabels(cmd.RequiredArgs.ResourceName)
-	case Org:
+	case flag.OrgResourceType:
 		cmd.displayMessageDefault()
 		labels, warnings, err = cmd.Actor.GetOrganizationLabels(cmd.RequiredArgs.ResourceName)
-	case Route:
+	case flag.RouteResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		labels, warnings, err = cmd.Actor.GetRouteLabels(cmd.RequiredArgs.ResourceName, cmd.Config.TargetedSpace().GUID)
-	case ServiceBroker:
+	case flag.ServiceBrokerResourceType:
 		cmd.displayMessageDefault()
 		labels, warnings, err = cmd.Actor.GetServiceBrokerLabels(cmd.RequiredArgs.ResourceName)
-	case ServiceInstance:
+	case flag.ServiceInstanceResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		labels, warnings, err = cmd.Actor.GetServiceInstanceLabels(cmd.RequiredArgs.ResourceName, cmd.Config.TargetedSpace().GUID)
-	case ServiceOffering:
+	case flag.ServiceOfferingResourceType:
 		cmd.displayMessageForServiceCommands()
 		labels, warnings, err = cmd.Actor.GetServiceOfferingLabels(cmd.RequiredArgs.ResourceName, cmd.ServiceBroker)
-	case ServicePlan:
+	case flag.ServicePlanResourceType:
 		cmd.displayMessageForServiceCommands()
 		labels, warnings, err = cmd.Actor.GetServicePlanLabels(cmd.RequiredArgs.ResourceName, cmd.ServiceOffering, cmd.ServiceBroker)
-	case Space:
+	case flag.SpaceResourceType:
 		cmd.displayMessageWithOrg()
 		labels, warnings, err = cmd.Actor.GetSpaceLabels(cmd.RequiredArgs.ResourceName, cmd.Config.TargetedOrganization().GUID)
-	case Stack:
+	case flag.StackResourceType:
 		cmd.displayMessageDefault()
 		labels, warnings, err = cmd.Actor.GetStackLabels(cmd.RequiredArgs.ResourceName)
 	default:
@@ -135,8 +119,8 @@ space
 stack`
 }
 
-func (cmd LabelsCommand) canonicalResourceTypeForName() ResourceType {
-	return ResourceType(strings.ToLower(cmd.RequiredArgs.ResourceType))
+func (cmd LabelsCommand) canonicalResourceTypeForName() flag.ResourceType {
+	return flag.ResourceType(strings.ToLower(cmd.RequiredArgs.ResourceType))
 }
 
 func (cmd LabelsCommand) printLabels(labels map[string]types.NullString) {
@@ -169,7 +153,7 @@ func (cmd LabelsCommand) printLabels(labels map[string]types.NullString) {
 
 func (cmd LabelsCommand) validateFlags() error {
 	resourceType := cmd.canonicalResourceTypeForName()
-	if cmd.BuildpackStack != "" && resourceType != Buildpack {
+	if cmd.BuildpackStack != "" && resourceType != flag.BuildpackResourceType {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.RequiredArgs.ResourceType, "--stack, -s",
@@ -177,7 +161,7 @@ func (cmd LabelsCommand) validateFlags() error {
 		}
 	}
 
-	if cmd.ServiceBroker != "" && !(resourceType == ServiceOffering || resourceType == ServicePlan) {
+	if cmd.ServiceBroker != "" && !(resourceType == flag.ServiceOfferingResourceType || resourceType == flag.ServicePlanResourceType) {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.RequiredArgs.ResourceType, "--broker, -b",
@@ -185,7 +169,7 @@ func (cmd LabelsCommand) validateFlags() error {
 		}
 	}
 
-	if cmd.ServiceOffering != "" && resourceType != ServicePlan {
+	if cmd.ServiceOffering != "" && resourceType != flag.ServicePlanResourceType {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.RequiredArgs.ResourceType, "--offering, -o",
@@ -197,10 +181,10 @@ func (cmd LabelsCommand) validateFlags() error {
 }
 
 func (cmd LabelsCommand) checkTarget() error {
-	switch ResourceType(cmd.RequiredArgs.ResourceType) {
-	case App, Route, ServiceInstance:
+	switch flag.ResourceType(cmd.RequiredArgs.ResourceType) {
+	case flag.AppResourceType, flag.RouteResourceType, flag.ServiceInstanceResourceType:
 		return cmd.SharedActor.CheckTarget(true, true)
-	case Space:
+	case flag.SpaceResourceType:
 		return cmd.SharedActor.CheckTarget(true, false)
 	default:
 		return cmd.SharedActor.CheckTarget(false, false)

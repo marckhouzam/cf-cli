@@ -282,15 +282,15 @@ type LabelsArgs struct {
 }
 
 type SetLabelArgs struct {
-	ResourceType string   `positional-arg-name:"RESOURCE" required:"true" description:"The type of resource to label"`
-	ResourceName string   `positional-arg-name:"RESOURCE_NAME" required:"true" description:"The name of the resource"`
-	Labels       []string `positional-arg-name:"KEY=VALUE" required:"true" description:"A space-separated list of labels to set on the resource"`
+	ResourceType ResourceType `positional-arg-name:"RESOURCE" required:"true" description:"The type of resource to label"`
+	ResourceName string       `positional-arg-name:"RESOURCE_NAME" required:"true" description:"The name of the resource"`
+	Labels       []string     `positional-arg-name:"KEY=VALUE" required:"true" description:"A space-separated list of labels to set on the resource"`
 }
 
 type UnsetLabelArgs struct {
-	ResourceType string   `positional-arg-name:"RESOURCE" required:"true" description:"The type of resource"`
-	ResourceName string   `positional-arg-name:"RESOURCE_NAME" required:"true" description:"The name of the resource"`
-	LabelKeys    []string `positional-arg-name:"KEY" required:"true" description:"A label to unset on the resource"`
+	ResourceType ResourceType `positional-arg-name:"RESOURCE" required:"true" description:"The type of resource"`
+	ResourceName string       `positional-arg-name:"RESOURCE_NAME" required:"true" description:"The name of the resource"`
+	LabelKeys    []string     `positional-arg-name:"KEY" required:"true" description:"A label to unset on the resource"`
 }
 type OrgRoleArgs struct {
 	Username     string  `positional-arg-name:"USERNAME" required:"true" description:"The user"`
