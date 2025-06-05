@@ -46,7 +46,7 @@ func (cmd *SetLabelCommand) Setup(config command.Config, ui command.UI) error {
 
 func (cmd SetLabelCommand) Execute(args []string) error {
 	targetResource := TargetResource{
-		ResourceType:    cmd.RequiredArgs.ResourceType,
+		ResourceType:    string(cmd.RequiredArgs.ResourceType),
 		ResourceName:    cmd.RequiredArgs.ResourceName,
 		BuildpackStack:  cmd.BuildpackStack,
 		ServiceBroker:   cmd.ServiceBroker,
@@ -77,16 +77,5 @@ cf set-label buildpack go_buildpack go=1.12 -s cflinuxfs4`
 }
 
 func (cmd SetLabelCommand) Resources() string {
-	return `
-app
-buildpack
-domain
-org
-route
-service-broker
-service-instance
-service-offering
-service-plan
-space
-stack`
+	return strings.Join(flag.GetAllResourceTypes(), "\n")
 }

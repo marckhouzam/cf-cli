@@ -7,6 +7,7 @@ import (
 
 	"code.cloudfoundry.org/cli/v8/actor/v7action"
 	"code.cloudfoundry.org/cli/v8/command"
+	"code.cloudfoundry.org/cli/v8/command/flag"
 	"code.cloudfoundry.org/cli/v8/command/translatableerror"
 	"code.cloudfoundry.org/cli/v8/types"
 	"code.cloudfoundry.org/cli/v8/util/configv3"
@@ -79,38 +80,38 @@ func (cmd *LabelUpdater) Execute(targetResource TargetResource, labels map[strin
 	}
 
 	var warnings v7action.Warnings
-	switch ResourceType(cmd.targetResource.ResourceType) {
-	case App:
+	switch flag.ResourceType(cmd.targetResource.ResourceType) {
+	case flag.AppResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		warnings, err = cmd.Actor.UpdateApplicationLabelsByApplicationName(cmd.targetResource.ResourceName, cmd.Config.TargetedSpace().GUID, cmd.labels)
-	case Buildpack:
+	case flag.BuildpackResourceType:
 		cmd.displayMessageWithStackAndLifecycle()
 		warnings, err = cmd.Actor.UpdateBuildpackLabelsByBuildpackNameAndStackAndLifecycle(cmd.targetResource.ResourceName, cmd.targetResource.BuildpackStack, cmd.targetResource.BuildpackLifecycle, cmd.labels)
-	case Domain:
+	case flag.DomainResourceType:
 		cmd.displayMessageDefault()
 		warnings, err = cmd.Actor.UpdateDomainLabelsByDomainName(cmd.targetResource.ResourceName, cmd.labels)
-	case Org:
+	case flag.OrgResourceType:
 		cmd.displayMessageDefault()
 		warnings, err = cmd.Actor.UpdateOrganizationLabelsByOrganizationName(cmd.targetResource.ResourceName, cmd.labels)
-	case Route:
+	case flag.RouteResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		warnings, err = cmd.Actor.UpdateRouteLabels(cmd.targetResource.ResourceName, cmd.Config.TargetedSpace().GUID, cmd.labels)
-	case ServiceBroker:
+	case flag.ServiceBrokerResourceType:
 		cmd.displayMessageDefault()
 		warnings, err = cmd.Actor.UpdateServiceBrokerLabelsByServiceBrokerName(cmd.targetResource.ResourceName, cmd.labels)
-	case ServiceInstance:
+	case flag.ServiceInstanceResourceType:
 		cmd.displayMessageWithOrgAndSpace()
 		warnings, err = cmd.Actor.UpdateServiceInstanceLabels(cmd.targetResource.ResourceName, cmd.Config.TargetedSpace().GUID, cmd.labels)
-	case ServiceOffering:
+	case flag.ServiceOfferingResourceType:
 		cmd.displayMessageForServiceCommands()
 		warnings, err = cmd.Actor.UpdateServiceOfferingLabels(cmd.targetResource.ResourceName, cmd.targetResource.ServiceBroker, cmd.labels)
-	case ServicePlan:
+	case flag.ServicePlanResourceType:
 		cmd.displayMessageForServiceCommands()
 		warnings, err = cmd.Actor.UpdateServicePlanLabels(cmd.targetResource.ResourceName, cmd.targetResource.ServiceOffering, cmd.targetResource.ServiceBroker, cmd.labels)
-	case Space:
+	case flag.SpaceResourceType:
 		cmd.displayMessageWithOrg()
 		warnings, err = cmd.Actor.UpdateSpaceLabelsBySpaceName(cmd.targetResource.ResourceName, cmd.Config.TargetedOrganization().GUID, cmd.labels)
-	case Stack:
+	case flag.StackResourceType:
 		cmd.displayMessageDefault()
 		warnings, err = cmd.Actor.UpdateStackLabelsByStackName(cmd.targetResource.ResourceName, cmd.labels)
 	}
@@ -125,10 +126,10 @@ func (cmd *LabelUpdater) Execute(targetResource TargetResource, labels map[strin
 }
 
 func (cmd *LabelUpdater) checkTarget() error {
-	switch ResourceType(cmd.targetResource.ResourceType) {
-	case App, ServiceInstance, Route:
+	switch flag.ResourceType(cmd.targetResource.ResourceType) {
+	case flag.AppResourceType, flag.ServiceInstanceResourceType, flag.RouteResourceType:
 		return cmd.SharedActor.CheckTarget(true, true)
-	case Space:
+	case flag.SpaceResourceType:
 		return cmd.SharedActor.CheckTarget(true, false)
 	default:
 		return cmd.SharedActor.CheckTarget(false, false)
@@ -136,14 +137,14 @@ func (cmd *LabelUpdater) checkTarget() error {
 }
 
 func (cmd *LabelUpdater) validateFlags() error {
-	resourceType := ResourceType(cmd.targetResource.ResourceType)
+	resourceType := flag.ResourceType(cmd.targetResource.ResourceType)
 	switch resourceType {
-	case App, Buildpack, Domain, Org, Route, ServiceBroker, ServiceInstance, ServiceOffering, ServicePlan, Space, Stack:
+	case flag.AppResourceType, flag.BuildpackResourceType, flag.DomainResourceType, flag.OrgResourceType, flag.RouteResourceType, flag.ServiceBrokerResourceType, flag.ServiceInstanceResourceType, flag.ServiceOfferingResourceType, flag.ServicePlanResourceType, flag.SpaceResourceType, flag.StackResourceType:
 	default:
 		return errors.New(cmd.UI.TranslateText("Unsupported resource type of '{{.ResourceType}}'", map[string]interface{}{"ResourceType": cmd.targetResource.ResourceType}))
 	}
 
-	if cmd.targetResource.BuildpackStack != "" && resourceType != Buildpack {
+	if cmd.targetResource.BuildpackStack != "" && resourceType != flag.BuildpackResourceType {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.targetResource.ResourceType, "--stack, -s",
@@ -151,7 +152,7 @@ func (cmd *LabelUpdater) validateFlags() error {
 		}
 	}
 
-	if cmd.targetResource.ServiceBroker != "" && !(resourceType == ServiceOffering || resourceType == ServicePlan) {
+	if cmd.targetResource.ServiceBroker != "" && !(resourceType == flag.ServiceOfferingResourceType || resourceType == flag.ServicePlanResourceType) {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.targetResource.ResourceType, "--broker, -b",
@@ -159,7 +160,7 @@ func (cmd *LabelUpdater) validateFlags() error {
 		}
 	}
 
-	if cmd.targetResource.ServiceOffering != "" && resourceType != ServicePlan {
+	if cmd.targetResource.ServiceOffering != "" && resourceType != flag.ServicePlanResourceType {
 		return translatableerror.ArgumentCombinationError{
 			Args: []string{
 				cmd.targetResource.ResourceType, "--offering, -o",

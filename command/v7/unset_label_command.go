@@ -47,7 +47,7 @@ func (cmd UnsetLabelCommand) Execute(args []string) error {
 	}
 
 	targetResource := TargetResource{
-		ResourceType:    cmd.RequiredArgs.ResourceType,
+		ResourceType:    string(cmd.RequiredArgs.ResourceType),
 		ResourceName:    cmd.RequiredArgs.ResourceName,
 		BuildpackStack:  cmd.BuildpackStack,
 		ServiceBroker:   cmd.ServiceBroker,
