@@ -34,7 +34,7 @@ func (cmd SetEnvCommand) Execute(args []string) error {
 	})
 
 	warnings, err := cmd.Actor.SetEnvironmentVariableByApplicationNameAndSpace(
-		appName,
+		string(appName),
 		cmd.Config.TargetedSpace().GUID,
 		v7action.EnvironmentVariablePair{
 			Key:   cmd.RequiredArgs.EnvironmentVariableName,

@@ -35,7 +35,7 @@ func (cmd UnsetEnvCommand) Execute(args []string) error {
 	})
 
 	warnings, err := cmd.Actor.UnsetEnvironmentVariableByApplicationNameAndSpace(
-		appName,
+		string(appName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.RequiredArgs.EnvironmentVariableName,
 	)

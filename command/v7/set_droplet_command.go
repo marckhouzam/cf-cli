@@ -22,7 +22,7 @@ func (cmd SetDropletCommand) Execute(args []string) error {
 		return err
 	}
 
-	appName := cmd.RequiredArgs.AppName
+	appName := string(cmd.RequiredArgs.AppName)
 	dropletGUID := cmd.RequiredArgs.DropletGUID
 	org := cmd.Config.TargetedOrganization()
 	space := cmd.Config.TargetedSpace()

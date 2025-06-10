@@ -35,7 +35,7 @@ func (cmd SetHealthCheckCommand) Execute(args []string) error {
 	cmd.UI.DisplayNewline()
 
 	app, warnings, err := cmd.Actor.SetApplicationProcessHealthCheckTypeByNameAndSpace(
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.RequiredArgs.HealthCheck.Type,
 		cmd.HTTPEndpoint,

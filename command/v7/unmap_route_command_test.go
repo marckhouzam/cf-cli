@@ -61,7 +61,7 @@ var _ = Describe("unmap-route Command", func() {
 		port = 0
 
 		cmd = UnmapRouteCommand{
-			RequiredArgs: flag.AppDomain{App: appName, Domain: domain},
+			RequiredArgs: flag.AppDomain{App: flag.ExistingAppName(appName), Domain: domain},
 			Hostname:     hostname,
 			Path:         flag.V7RoutePath{Path: path},
 			Port:         port,

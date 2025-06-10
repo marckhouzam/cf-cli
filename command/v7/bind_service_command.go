@@ -30,7 +30,7 @@ func (cmd BindServiceCommand) Execute(args []string) error {
 	stream, warnings, err := cmd.Actor.CreateServiceAppBinding(v7action.CreateServiceAppBindingParams{
 		SpaceGUID:           cmd.Config.TargetedSpace().GUID,
 		ServiceInstanceName: cmd.RequiredArgs.ServiceInstanceName,
-		AppName:             cmd.RequiredArgs.AppName,
+		AppName:             string(cmd.RequiredArgs.AppName),
 		BindingName:         cmd.BindingName.Value,
 		Parameters:          types.OptionalObject(cmd.ParametersAsJSON),
 	})

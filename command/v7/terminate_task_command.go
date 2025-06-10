@@ -38,7 +38,7 @@ func (cmd TerminateTaskCommand) Execute(args []string) error {
 		return err
 	}
 
-	application, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, space.GUID)
+	application, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), space.GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
