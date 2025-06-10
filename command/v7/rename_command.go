@@ -21,7 +21,7 @@ func (cmd RenameCommand) Execute(args []string) error {
 	if err != nil {
 		return err
 	}
-	oldName, newName := cmd.RequiredArgs.OldAppName, cmd.RequiredArgs.NewAppName
+	oldName, newName := string(cmd.RequiredArgs.OldAppName), cmd.RequiredArgs.NewAppName
 	cmd.UI.DisplayTextWithFlavor(
 		"Renaming app {{.OldAppName}} to {{.NewAppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...",
 		map[string]interface{}{

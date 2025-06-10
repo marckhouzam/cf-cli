@@ -13,8 +13,8 @@ type OptionalAppName struct {
 }
 
 type AppDroplet struct {
-	AppName     string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	DropletGUID string `positional-arg-name:"DROPLET_GUID" required:"true" description:"The droplet guid"`
+	AppName     ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	DropletGUID string          `positional-arg-name:"DROPLET_GUID" required:"true" description:"The droplet guid"`
 }
 
 type BuildpackName struct {
@@ -78,8 +78,8 @@ type Space struct {
 }
 
 type Rename struct {
-	OldAppName string `positional-arg-name:"APP_NAME" required:"true" description:"The current app name"`
-	NewAppName string `positional-arg-name:"NEW_APP_NAME" required:"true" description:"The new app name"`
+	OldAppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The current app name"`
+	NewAppName string          `positional-arg-name:"NEW_APP_NAME" required:"true" description:"The new app name"`
 }
 
 type RenameSpace struct {
@@ -114,8 +114,8 @@ type CreateUser struct {
 }
 
 type AppInstance struct {
-	AppName string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	Index   int    `positional-arg-name:"INDEX" required:"true" description:"The index of the application instance"`
+	AppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	Index   int             `positional-arg-name:"INDEX" required:"true" description:"The index of the application instance"`
 }
 
 type OrgSpace struct {
@@ -129,8 +129,8 @@ type ServiceInstanceKey struct {
 }
 
 type AppDomain struct {
-	App    string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	Domain string `positional-arg-name:"DOMAIN" required:"true" description:"The domain"`
+	App    ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	Domain string          `positional-arg-name:"DOMAIN" required:"true" description:"The domain"`
 }
 
 type HostDomain struct {
@@ -177,18 +177,18 @@ type FilesArgs struct {
 }
 
 type EnvironmentArgs struct {
-	AppName string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	AppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
 }
 
 type SetEnvironmentArgs struct {
-	AppName                  string              `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	AppName                  ExistingAppName     `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
 	EnvironmentVariableName  string              `positional-arg-name:"ENV_VAR_NAME" required:"true" description:"The environment variable name"`
 	EnvironmentVariableValue EnvironmentVariable `positional-arg-name:"ENV_VAR_VALUE" required:"true" description:"The environment variable value"`
 }
 
 type UnsetEnvironmentArgs struct {
-	AppName                 string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	EnvironmentVariableName string `positional-arg-name:"ENV_VAR_NAME" required:"true" description:"The environment variable name"`
+	AppName                 ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	EnvironmentVariableName string          `positional-arg-name:"ENV_VAR_NAME" required:"true" description:"The environment variable name"`
 }
 
 type CopySourceArgs struct {
@@ -212,8 +212,8 @@ type ShareServiceArgs struct {
 }
 
 type BindServiceArgs struct {
-	AppName             string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	ServiceInstanceName string `positional-arg-name:"SERVICE_INSTANCE" required:"true" description:"The service instance"`
+	AppName             ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	ServiceInstanceName string          `positional-arg-name:"SERVICE_INSTANCE" required:"true" description:"The service instance"`
 }
 
 type RouteServiceArgs struct {
@@ -261,7 +261,7 @@ type V6SetHealthCheckArgs struct {
 }
 
 type SetHealthCheckArgs struct {
-	AppName     string          `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	AppName     ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
 	HealthCheck HealthCheckType `positional-arg-name:"HEALTH_CHECK_TYPE" required:"true" description:"Set to 'port'"`
 }
 
@@ -365,12 +365,12 @@ type RunTaskArgs struct {
 }
 
 type RunTaskArgsV7 struct {
-	AppName string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	AppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
 }
 
 type TerminateTaskArgs struct {
-	AppName    string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
-	SequenceID string `positional-arg-name:"TASK_ID" required:"true" description:"The task's unique sequence ID"`
+	AppName    ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+	SequenceID string          `positional-arg-name:"TASK_ID" required:"true" description:"The task's unique sequence ID"`
 }
 
 type IsolationSegmentName struct {

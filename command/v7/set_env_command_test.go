@@ -6,6 +6,7 @@ import (
 	"code.cloudfoundry.org/cli/v8/actor/actionerror"
 	"code.cloudfoundry.org/cli/v8/actor/v7action"
 	"code.cloudfoundry.org/cli/v8/command/commandfakes"
+	"code.cloudfoundry.org/cli/v8/command/flag"
 	v7 "code.cloudfoundry.org/cli/v8/command/v7"
 	"code.cloudfoundry.org/cli/v8/command/v7/v7fakes"
 	"code.cloudfoundry.org/cli/v8/util/configv3"
@@ -46,7 +47,7 @@ var _ = Describe("set-env Command", func() {
 		fakeConfig.BinaryNameReturns(binaryName)
 		appName = "some-app"
 
-		cmd.RequiredArgs.AppName = appName
+		cmd.RequiredArgs.AppName = flag.ExistingAppName(appName)
 		cmd.RequiredArgs.EnvironmentVariableName = "some-key"
 		cmd.RequiredArgs.EnvironmentVariableValue = "some-value"
 	})

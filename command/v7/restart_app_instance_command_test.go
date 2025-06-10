@@ -41,7 +41,7 @@ var _ = Describe("restart-app-instance Command", func() {
 		processType = "some-special-type"
 
 		cmd = v7.RestartAppInstanceCommand{
-			RequiredArgs: flag.AppInstance{AppName: app, Index: 6},
+			RequiredArgs: flag.AppInstance{AppName: flag.ExistingAppName(app), Index: 6},
 			ProcessType:  processType,
 
 			BaseCommand: v7.BaseCommand{

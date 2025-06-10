@@ -33,7 +33,7 @@ func (cmd RestartAppInstanceCommand) Execute(args []string) error {
 		"SpaceName":     cmd.Config.TargetedSpace().Name,
 	})
 
-	warnings, err := cmd.Actor.DeleteInstanceByApplicationNameSpaceProcessTypeAndIndex(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, cmd.ProcessType, cmd.RequiredArgs.Index)
+	warnings, err := cmd.Actor.DeleteInstanceByApplicationNameSpaceProcessTypeAndIndex(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, cmd.ProcessType, cmd.RequiredArgs.Index)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

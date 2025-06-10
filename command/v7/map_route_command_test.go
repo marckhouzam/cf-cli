@@ -63,7 +63,7 @@ var _ = Describe("map-route Command", func() {
 		options = []string{}
 
 		cmd = MapRouteCommand{
-			RequiredArgs: flag.AppDomain{App: appName, Domain: domain},
+			RequiredArgs: flag.AppDomain{App: flag.ExistingAppName(appName), Domain: domain},
 			Hostname:     hostname,
 			Path:         flag.V7RoutePath{Path: path},
 			AppProtocol:  "http2",

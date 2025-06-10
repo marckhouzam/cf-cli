@@ -58,7 +58,7 @@ var _ = Describe("update Command", func() {
 				SharedActor: fakeSharedActor,
 				Actor:       fakeActor,
 			},
-			RequiredArgs: flag.AppDomain{App: appName, Domain: domainName},
+			RequiredArgs: flag.AppDomain{App: flag.ExistingAppName(appName), Domain: domainName},
 			AppProtocol:  appProtocol,
 			Hostname:     hostname,
 			Path:         flag.V7RoutePath{Path: path},

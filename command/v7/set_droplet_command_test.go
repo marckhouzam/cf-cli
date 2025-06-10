@@ -41,7 +41,7 @@ var _ = Describe("set-droplet Command", func() {
 		dropletGUID = "some-droplet-guid"
 
 		cmd = v7.SetDropletCommand{
-			RequiredArgs: flag.AppDroplet{AppName: app, DropletGUID: dropletGUID},
+			RequiredArgs: flag.AppDroplet{AppName: flag.ExistingAppName(app), DropletGUID: dropletGUID},
 
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,

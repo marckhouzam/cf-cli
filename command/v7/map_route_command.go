@@ -57,7 +57,7 @@ func (cmd MapRouteCommand) Execute(args []string) error {
 	}
 
 	spaceGUID := cmd.Config.TargetedSpace().GUID
-	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.App, spaceGUID)
+	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.App), spaceGUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

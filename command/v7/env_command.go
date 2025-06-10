@@ -36,7 +36,7 @@ func (cmd EnvCommand) Execute(_ []string) error {
 	})
 
 	envGroups, warnings, err := cmd.Actor.GetEnvironmentVariablesByApplicationNameAndSpace(
-		appName,
+		string(appName),
 		cmd.Config.TargetedSpace().GUID,
 	)
 	cmd.UI.DisplayWarnings(warnings)

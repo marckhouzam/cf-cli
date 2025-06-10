@@ -27,7 +27,7 @@ func (cmd UnbindServiceCommand) Execute(args []string) error {
 	stream, warnings, err := cmd.Actor.DeleteServiceAppBinding(v7action.DeleteServiceAppBindingParams{
 		SpaceGUID:           cmd.Config.TargetedSpace().GUID,
 		ServiceInstanceName: cmd.RequiredArgs.ServiceInstanceName,
-		AppName:             cmd.RequiredArgs.AppName,
+		AppName:             string(cmd.RequiredArgs.AppName),
 	})
 	cmd.UI.DisplayWarnings(warnings)
 	switch err.(type) {
