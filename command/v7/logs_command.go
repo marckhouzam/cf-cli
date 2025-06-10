@@ -80,7 +80,7 @@ func (cmd LogsCommand) Execute(args []string) error {
 
 func (cmd LogsCommand) displayRecentLogs() error {
 	messages, warnings, err := cmd.Actor.GetRecentLogsForApplicationByNameAndSpace(
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.LogCacheClient,
 	)
@@ -132,7 +132,7 @@ func (cmd LogsCommand) handleLogErr(logErr error) {
 
 func (cmd LogsCommand) streamLogs() error {
 	messages, logErrs, stopStreaming, warnings, err := cmd.Actor.GetStreamingLogsForApplicationByNameAndSpace(
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.LogCacheClient,
 	)

@@ -28,7 +28,7 @@ func (cmd *DisableSSHCommand) Execute(args []string) error {
 		"CurrentUserName": user.Name,
 	})
 
-	app, getAppWarnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	app, getAppWarnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	if err != nil {
 		return err
 	}

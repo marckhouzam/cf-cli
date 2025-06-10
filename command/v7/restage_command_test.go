@@ -44,7 +44,7 @@ var _ = Describe("restage Command", func() {
 		fakeAppStager = new(sharedfakes.FakeAppStager)
 
 		cmd = v7.RestageCommand{
-			RequiredArgs: flag.AppName{AppName: app.Name},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app.Name)},
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,
 				Config:      fakeConfig,

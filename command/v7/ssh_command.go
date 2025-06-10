@@ -68,7 +68,7 @@ func (cmd SSHCommand) Execute(args []string) error {
 	}
 
 	sshAuth, warnings, err := cmd.Actor.GetSecureShellConfigurationByApplicationNameSpaceProcessTypeAndIndex(
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.ProcessType,
 		cmd.ProcessIndex,

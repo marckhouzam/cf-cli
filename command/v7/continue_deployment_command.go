@@ -35,7 +35,7 @@ func (cmd *ContinueDeploymentCommand) Execute(args []string) error {
 		},
 	)
 
-	application, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	application, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

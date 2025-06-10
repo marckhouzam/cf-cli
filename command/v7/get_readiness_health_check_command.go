@@ -34,7 +34,7 @@ func (cmd GetReadinessHealthCheckCommand) Execute(args []string) error {
 		"Username":  user.Name,
 	})
 
-	processReadinessHealthChecks, warnings, err := cmd.Actor.GetApplicationProcessReadinessHealthChecksByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	processReadinessHealthChecks, warnings, err := cmd.Actor.GetApplicationProcessReadinessHealthChecksByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

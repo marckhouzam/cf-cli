@@ -42,7 +42,7 @@ var _ = Describe("app Command", func() {
 		app = "some-app"
 
 		cmd = v7.AppCommand{
-			RequiredArgs: flag.AppName{AppName: app},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app)},
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,
 				Config:      fakeConfig,

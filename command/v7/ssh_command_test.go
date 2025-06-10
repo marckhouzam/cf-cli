@@ -40,7 +40,7 @@ var _ = Describe("ssh Command", func() {
 
 		appName = "some-app"
 		cmd = SSHCommand{
-			RequiredArgs: flag.AppName{AppName: appName},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(appName)},
 
 			ProcessType:         "some-process-type",
 			ProcessIndex:        1,

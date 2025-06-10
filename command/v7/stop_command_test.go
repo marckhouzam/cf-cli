@@ -41,7 +41,7 @@ var _ = Describe("stop Command", func() {
 		app = "some-app"
 
 		cmd = v7.StopCommand{
-			RequiredArgs: flag.AppName{AppName: app},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app)},
 
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,

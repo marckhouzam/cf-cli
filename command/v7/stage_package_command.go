@@ -61,7 +61,7 @@ func (cmd StagePackageCommand) Execute(args []string) error {
 	packageGUID := cmd.PackageGUID
 
 	if packageGUID == "" {
-		app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+		app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 		cmd.UI.DisplayWarnings(warnings)
 		if err != nil {
 			return err
@@ -76,7 +76,7 @@ func (cmd StagePackageCommand) Execute(args []string) error {
 		packageGUID = pkg.GUID
 	}
 
-	logStream, logErrStream, stopLogStreamFunc, logWarnings, logErr := cmd.Actor.GetStreamingLogsForApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, cmd.LogCacheClient)
+	logStream, logErrStream, stopLogStreamFunc, logWarnings, logErr := cmd.Actor.GetStreamingLogsForApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, cmd.LogCacheClient)
 	cmd.UI.DisplayWarnings(logWarnings)
 	if logErr != nil {
 		return logErr
@@ -85,7 +85,7 @@ func (cmd StagePackageCommand) Execute(args []string) error {
 
 	dropletStream, warningsStream, errStream := cmd.Actor.StagePackage(
 		packageGUID,
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 	)
 

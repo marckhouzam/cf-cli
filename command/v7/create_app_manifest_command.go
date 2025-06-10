@@ -43,7 +43,7 @@ func (cmd CreateAppManifestCommand) Execute(args []string) error {
 		return err
 	}
 
-	appName := cmd.RequiredArgs.AppName
+	appName := string(cmd.RequiredArgs.AppName)
 	cmd.UI.DisplayTextWithFlavor("Creating an app manifest from current settings of app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...", map[string]interface{}{
 		"AppName":   appName,
 		"OrgName":   cmd.Config.TargetedOrganization().Name,

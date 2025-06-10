@@ -18,7 +18,7 @@ func (cmd *SSHEnabledCommand) Execute(args []string) error {
 		return err
 	}
 
-	ccv3SSHEnabled, warnings, err := cmd.Actor.GetSSHEnabledByAppName(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	ccv3SSHEnabled, warnings, err := cmd.Actor.GetSSHEnabledByAppName(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

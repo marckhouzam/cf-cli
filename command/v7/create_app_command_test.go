@@ -50,7 +50,7 @@ var _ = Describe("create-app Command", func() {
 				SharedActor: fakeSharedActor,
 				Actor:       fakeActor,
 			},
-			RequiredArgs: flag.AppName{AppName: app},
+			RequiredArgs: flag.NewAppName{AppName: app},
 		}
 	})
 

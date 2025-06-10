@@ -35,7 +35,7 @@ func (cmd PackagesCommand) Execute(args []string) error {
 	})
 	cmd.UI.DisplayNewline()
 
-	packages, warnings, err := cmd.Actor.GetApplicationPackages(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	packages, warnings, err := cmd.Actor.GetApplicationPackages(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

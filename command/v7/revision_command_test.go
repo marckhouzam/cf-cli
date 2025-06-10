@@ -51,7 +51,7 @@ var _ = Describe("revision Command", func() {
 		fakeConfig.BinaryNameReturns(binaryName)
 		appName = "some-app"
 
-		cmd.RequiredArgs.AppName = appName
+		cmd.RequiredArgs.AppName = flag.ExistingAppName(appName)
 	})
 
 	JustBeforeEach(func() {

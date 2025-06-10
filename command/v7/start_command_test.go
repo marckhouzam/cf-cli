@@ -58,7 +58,7 @@ var _ = Describe("start Command", func() {
 		fakeActor.GetApplicationByNameAndSpaceReturns(app, v7action.Warnings{"get-app-warning"}, nil)
 
 		cmd = v7.StartCommand{
-			RequiredArgs: flag.AppName{AppName: app.Name},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app.Name)},
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,
 				Config:      fakeConfig,

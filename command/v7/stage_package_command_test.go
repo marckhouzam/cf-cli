@@ -60,7 +60,7 @@ var _ = Describe("stage-package Command", func() {
 		spaceGUID = "some-space-guid"
 
 		cmd = v7.StagePackageCommand{
-			RequiredArgs: flag.AppName{AppName: appName},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(appName)},
 			PackageGUID:  packageGUID,
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,

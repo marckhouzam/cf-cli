@@ -33,7 +33,7 @@ func (cmd GetHealthCheckCommand) Execute(args []string) error {
 		"Username":  user.Name,
 	})
 
-	processHealthChecks, warnings, err := cmd.Actor.GetApplicationProcessHealthChecksByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	processHealthChecks, warnings, err := cmd.Actor.GetApplicationProcessHealthChecksByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

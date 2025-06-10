@@ -77,7 +77,7 @@ func (cmd RestageCommand) Execute(args []string) error {
 	})
 	cmd.UI.DisplayNewline()
 
-	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (cmd RestageCommand) Execute(args []string) error {
 	pkg, warnings, err := cmd.Actor.GetNewestReadyPackageForApplication(app)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
-		return mapErr(cmd.Config, cmd.RequiredArgs.AppName, err)
+		return mapErr(cmd.Config, string(cmd.RequiredArgs.AppName), err)
 	}
 
 	opts := shared.AppStartOpts{
@@ -113,7 +113,7 @@ func (cmd RestageCommand) Execute(args []string) error {
 
 	err = cmd.Stager.StageAndStart(app, cmd.Config.TargetedSpace(), cmd.Config.TargetedOrganization(), pkg.GUID, opts)
 	if err != nil {
-		return mapErr(cmd.Config, cmd.RequiredArgs.AppName, err)
+		return mapErr(cmd.Config, string(cmd.RequiredArgs.AppName), err)
 	}
 
 	return nil

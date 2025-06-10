@@ -43,7 +43,7 @@ func (cmd CreatePackageCommand) Execute(args []string) error {
 	if err != nil {
 		return err
 	}
-	err = cmd.PackageDisplayer.DisplaySetupMessage(cmd.RequiredArgs.AppName, user.Name, isDockerImage)
+	err = cmd.PackageDisplayer.DisplaySetupMessage(string(cmd.RequiredArgs.AppName), user.Name, isDockerImage)
 	if err != nil {
 		return err
 	}
@@ -53,9 +53,9 @@ func (cmd CreatePackageCommand) Execute(args []string) error {
 		warnings v7action.Warnings
 	)
 	if isDockerImage {
-		pkg, warnings, err = cmd.Actor.CreateDockerPackageByApplicationNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, v7action.DockerImageCredentials{Path: cmd.DockerImage.Path})
+		pkg, warnings, err = cmd.Actor.CreateDockerPackageByApplicationNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, v7action.DockerImageCredentials{Path: cmd.DockerImage.Path})
 	} else {
-		pkg, warnings, err = cmd.Actor.CreateAndUploadBitsPackageByApplicationNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, string(cmd.AppPath))
+		pkg, warnings, err = cmd.Actor.CreateAndUploadBitsPackageByApplicationNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, string(cmd.AppPath))
 	}
 
 	cmd.UI.DisplayWarnings(warnings)
