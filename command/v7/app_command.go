@@ -38,7 +38,7 @@ func (cmd AppCommand) Execute(args []string) error {
 	cmd.UI.DisplayNewline()
 
 	appSummaryDisplayer := shared.NewAppSummaryDisplayer(cmd.UI)
-	summary, warnings, err := cmd.Actor.GetDetailedAppSummary(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, false)
+	summary, warnings, err := cmd.Actor.GetDetailedAppSummary(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, false)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
@@ -49,7 +49,7 @@ func (cmd AppCommand) Execute(args []string) error {
 }
 
 func (cmd AppCommand) displayAppGUID() error {
-	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

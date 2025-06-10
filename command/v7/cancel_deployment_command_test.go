@@ -43,7 +43,7 @@ var _ = Describe("Cancel deployment command", func() {
 		fakeConfig.BinaryNameReturns(binaryName)
 
 		cmd = CancelDeploymentCommand{
-			RequiredArgs: flag.AppName{AppName: appName},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(appName)},
 			BaseCommand: BaseCommand{
 				UI:          testUI,
 				Config:      fakeConfig,

@@ -53,7 +53,7 @@ var _ = Describe("create-package Command", func() {
 				SharedActor: fakeSharedActor,
 				Actor:       fakeActor,
 			},
-			RequiredArgs:     flag.AppName{AppName: app},
+			RequiredArgs:     flag.AppName{AppName: flag.ExistingAppName(app)},
 			PackageDisplayer: packageDisplayer,
 		}
 	})

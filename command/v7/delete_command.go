@@ -57,7 +57,7 @@ func (cmd DeleteCommand) Execute(args []string) error {
 	})
 
 	warnings, err := cmd.Actor.DeleteApplicationByNameAndSpace(
-		cmd.RequiredArgs.AppName,
+		string(cmd.RequiredArgs.AppName),
 		cmd.Config.TargetedSpace().GUID,
 		cmd.DeleteMappedRoutes,
 	)

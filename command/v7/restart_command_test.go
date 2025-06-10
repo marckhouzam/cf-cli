@@ -60,7 +60,7 @@ var _ = Describe("restart Command", func() {
 		fakeActor.GetApplicationByNameAndSpaceReturns(app, v7action.Warnings{"get-app-warning"}, nil)
 
 		cmd = v7.RestartCommand{
-			RequiredArgs: flag.AppName{AppName: app.Name},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app.Name)},
 			Strategy:     flag.DeploymentStrategy{Name: strategy},
 			NoWait:       noWait,
 

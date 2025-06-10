@@ -41,7 +41,7 @@ var _ = Describe("delete Command", func() {
 		app = "some-app"
 
 		cmd = DeleteCommand{
-			RequiredArgs: flag.AppName{AppName: app},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app)},
 
 			BaseCommand: BaseCommand{
 				UI:          testUI,

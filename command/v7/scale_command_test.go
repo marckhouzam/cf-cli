@@ -8,6 +8,7 @@ import (
 	"code.cloudfoundry.org/cli/v8/actor/v7action"
 	"code.cloudfoundry.org/cli/v8/api/cloudcontroller/ccv3/constant"
 	"code.cloudfoundry.org/cli/v8/command/commandfakes"
+	"code.cloudfoundry.org/cli/v8/command/flag"
 	"code.cloudfoundry.org/cli/v8/command/translatableerror"
 	. "code.cloudfoundry.org/cli/v8/command/v7"
 	"code.cloudfoundry.org/cli/v8/command/v7/v7fakes"
@@ -56,7 +57,7 @@ var _ = Describe("scale Command", func() {
 		binaryName = "faceman"
 		fakeConfig.BinaryNameReturns(binaryName)
 
-		cmd.RequiredArgs.AppName = app.Name
+		cmd.RequiredArgs.AppName = flag.ExistingAppName(app.Name)
 		cmd.ProcessType = constant.ProcessTypeWeb
 	})
 

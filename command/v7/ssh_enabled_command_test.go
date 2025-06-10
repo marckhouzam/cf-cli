@@ -6,6 +6,7 @@ import (
 	"code.cloudfoundry.org/cli/v8/actor/v7action"
 	"code.cloudfoundry.org/cli/v8/api/cloudcontroller/ccv3"
 	"code.cloudfoundry.org/cli/v8/command/commandfakes"
+	"code.cloudfoundry.org/cli/v8/command/flag"
 	. "code.cloudfoundry.org/cli/v8/command/v7"
 	"code.cloudfoundry.org/cli/v8/command/v7/v7fakes"
 	"code.cloudfoundry.org/cli/v8/util/configv3"
@@ -45,7 +46,7 @@ var _ = Describe("ssh-enabled Command", func() {
 		}
 
 		appName = "some-app"
-		cmd.RequiredArgs.AppName = appName
+		cmd.RequiredArgs.AppName = flag.ExistingAppName(appName)
 
 		binaryName = "faceman"
 		fakeConfig.BinaryNameReturns(binaryName)

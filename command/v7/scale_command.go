@@ -36,7 +36,7 @@ func (cmd ScaleCommand) Execute(args []string) error {
 		return err
 	}
 
-	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+	app, warnings, err := cmd.Actor.GetApplicationByNameAndSpace(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
@@ -75,12 +75,12 @@ func (cmd ScaleCommand) Execute(args []string) error {
 func (cmd ScaleCommand) translateErrors(err error) error {
 	if _, ok := err.(actionerror.StartupTimeoutError); ok {
 		return translatableerror.StartupTimeoutError{
-			AppName:    cmd.RequiredArgs.AppName,
+			AppName:    string(cmd.RequiredArgs.AppName),
 			BinaryName: cmd.Config.BinaryName(),
 		}
 	} else if _, ok := err.(actionerror.AllInstancesCrashedError); ok {
 		return translatableerror.ApplicationUnableToStartError{
-			AppName:    cmd.RequiredArgs.AppName,
+			AppName:    string(cmd.RequiredArgs.AppName),
 			BinaryName: cmd.Config.BinaryName(),
 		}
 	}
@@ -182,7 +182,7 @@ func (cmd ScaleCommand) showCurrentScale(userName string, runningErr error) erro
 
 	cmd.UI.DisplayNewline()
 
-	summary, warnings, err := cmd.Actor.GetDetailedAppSummary(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID, false)
+	summary, warnings, err := cmd.Actor.GetDetailedAppSummary(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID, false)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

@@ -24,7 +24,7 @@ func (cmd EventsCommand) Execute(_ []string) error {
 		return err
 	}
 
-	appName := cmd.RequiredArgs.AppName
+	appName := string(cmd.RequiredArgs.AppName)
 	cmd.UI.DisplayTextWithFlavor("Getting events for app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...", map[string]interface{}{
 		"AppName":   appName,
 		"OrgName":   cmd.Config.TargetedOrganization().Name,

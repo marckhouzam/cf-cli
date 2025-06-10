@@ -1,6 +1,10 @@
 package flag
 
 type AppName struct {
+	AppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
+}
+
+type NewAppName struct {
 	AppName string `positional-arg-name:"APP_NAME" required:"true" description:"The application name"`
 }
 

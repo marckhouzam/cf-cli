@@ -44,7 +44,7 @@ var _ = Describe("Continue deployment command", func() {
 		fakeConfig.BinaryNameReturns(binaryName)
 
 		cmd = ContinueDeploymentCommand{
-			RequiredArgs: flag.AppName{AppName: appName},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(appName)},
 			NoWait:       noWait,
 			BaseCommand: BaseCommand{
 				UI:          testUI,

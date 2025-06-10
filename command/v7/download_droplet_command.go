@@ -49,7 +49,7 @@ func (cmd DownloadDropletCommand) Execute(args []string) error {
 			"Username":    user.Name,
 		})
 
-		rawDropletBytes, warnings, err = cmd.Actor.DownloadDropletByGUIDAndAppName(dropletGUID, cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+		rawDropletBytes, warnings, err = cmd.Actor.DownloadDropletByGUIDAndAppName(dropletGUID, string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	} else {
 		cmd.UI.DisplayTextWithFlavor("Downloading current droplet for app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...", map[string]interface{}{
 			"AppName":   cmd.RequiredArgs.AppName,
@@ -58,14 +58,14 @@ func (cmd DownloadDropletCommand) Execute(args []string) error {
 			"Username":  user.Name,
 		})
 
-		rawDropletBytes, dropletGUID, warnings, err = cmd.Actor.DownloadCurrentDropletByAppName(cmd.RequiredArgs.AppName, cmd.Config.TargetedSpace().GUID)
+		rawDropletBytes, dropletGUID, warnings, err = cmd.Actor.DownloadCurrentDropletByAppName(string(cmd.RequiredArgs.AppName), cmd.Config.TargetedSpace().GUID)
 	}
 
 	cmd.UI.DisplayWarnings(warnings)
 
 	if err != nil {
 		if _, ok := err.(actionerror.DropletNotFoundError); ok {
-			return translatableerror.NoDropletForAppError{AppName: cmd.RequiredArgs.AppName, DropletGUID: cmd.Droplet}
+			return translatableerror.NoDropletForAppError{AppName: string(cmd.RequiredArgs.AppName), DropletGUID: cmd.Droplet}
 		}
 		return err
 	}

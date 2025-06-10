@@ -40,7 +40,7 @@ var _ = Describe("get-readiness-health-check Command", func() {
 		app = "some-app"
 
 		cmd = GetReadinessHealthCheckCommand{
-			RequiredArgs: flag.AppName{AppName: app},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(app)},
 
 			BaseCommand: BaseCommand{
 				UI:          testUI,

@@ -29,7 +29,7 @@ func (cmd RevisionCommand) Execute(_ []string) error {
 		return err
 	}
 
-	appName := cmd.RequiredArgs.AppName
+	appName := string(cmd.RequiredArgs.AppName)
 	if cmd.Version.Value > 0 {
 		cmd.UI.DisplayTextWithFlavor("Showing revision {{.Version}} for app {{.AppName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.Username}}...", map[string]interface{}{
 			"AppName":   appName,

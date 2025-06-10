@@ -73,7 +73,7 @@ var _ = Describe("rollback Command", func() {
 		})
 
 		cmd = v7.RollbackCommand{
-			RequiredArgs: flag.AppName{AppName: appName},
+			RequiredArgs: flag.AppName{AppName: flag.ExistingAppName(appName)},
 			BaseCommand: v7.BaseCommand{
 				UI:          testUI,
 				Config:      fakeConfig,
