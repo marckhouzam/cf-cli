@@ -45,6 +45,10 @@ type Organization struct {
 	Organization string `positional-arg-name:"ORG" required:"true" description:"The organization"`
 }
 
+type ExistingOrganization struct {
+	Organization ExistingOrgType `positional-arg-name:"ORG" required:"true" description:"The organization"`
+}
+
 type OrganizationQuota struct {
 	OrganizationQuotaName string `positional-arg-name:"ORG_QUOTA_NAME" required:"true" description:"The organization quota name"`
 }

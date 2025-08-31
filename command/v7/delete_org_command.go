@@ -8,10 +8,10 @@ import (
 type DeleteOrgCommand struct {
 	BaseCommand
 
-	RequiredArgs    flag.Organization `positional-args:"yes"`
-	Force           bool              `short:"f" description:"Force deletion without confirmation"`
-	usage           interface{}       `usage:"CF_NAME delete-org ORG [-f]"`
-	relatedCommands interface{}       `related_commands:"create-org, orgs, quotas, set-org-role"`
+	RequiredArgs    flag.ExistingOrganization `positional-args:"yes"`
+	Force           bool                      `short:"f" description:"Force deletion without confirmation"`
+	usage           interface{}               `usage:"CF_NAME delete-org ORG [-f]"`
+	relatedCommands interface{}               `related_commands:"create-org, orgs, quotas, set-org-role"`
 }
 
 func (cmd *DeleteOrgCommand) Execute(args []string) error {
@@ -46,7 +46,7 @@ func (cmd *DeleteOrgCommand) Execute(args []string) error {
 		"Username": user.Name,
 	})
 
-	warnings, err := cmd.Actor.DeleteOrganization(cmd.RequiredArgs.Organization)
+	warnings, err := cmd.Actor.DeleteOrganization(cmd.RequiredArgs.Organization.String())
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		switch err.(type) {
@@ -61,7 +61,7 @@ func (cmd *DeleteOrgCommand) Execute(args []string) error {
 
 	cmd.UI.DisplayOK()
 
-	if cmd.Config.TargetedOrganization().Name == cmd.RequiredArgs.Organization {
+	if cmd.Config.TargetedOrganization().Name == cmd.RequiredArgs.Organization.String() {
 		cmd.UI.DisplayText("TIP: No org or space targeted, use '{{.CfTargetCommand}}' to target an org and space.",
 			map[string]interface{}{"CfTargetCommand": cmd.Config.BinaryName() + " target -o ORG -s SPACE"})
 		cmd.Config.UnsetOrganizationAndSpaceInformation()

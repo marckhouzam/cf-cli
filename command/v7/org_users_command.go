@@ -10,10 +10,10 @@ import (
 type OrgUsersCommand struct {
 	BaseCommand
 
-	RequiredArgs    flag.Organization `positional-args:"yes"`
-	AllUsers        bool              `long:"all-users" short:"a" description:"List all users with roles in the org or in spaces within the org"`
-	usage           interface{}       `usage:"CF_NAME org-users ORG"`
-	relatedCommands interface{}       `related_commands:"orgs, set-org-role"`
+	RequiredArgs    flag.ExistingOrganization `positional-args:"yes"`
+	AllUsers        bool                      `long:"all-users" short:"a" description:"List all users with roles in the org or in spaces within the org"`
+	usage           interface{}               `usage:"CF_NAME org-users ORG"`
+	relatedCommands interface{}               `related_commands:"orgs, set-org-role"`
 }
 
 func (cmd *OrgUsersCommand) Execute(args []string) error {
@@ -33,7 +33,7 @@ func (cmd *OrgUsersCommand) Execute(args []string) error {
 	})
 	cmd.UI.DisplayNewline()
 
-	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.RequiredArgs.Organization)
+	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.RequiredArgs.Organization.String())
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
