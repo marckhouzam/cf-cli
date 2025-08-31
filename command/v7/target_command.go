@@ -3,6 +3,7 @@ package v7
 import (
 	"fmt"
 
+	"code.cloudfoundry.org/cli/v8/command/flag"
 	"code.cloudfoundry.org/cli/v8/command/translatableerror"
 	"code.cloudfoundry.org/cli/v8/util/configv3"
 )
@@ -10,10 +11,10 @@ import (
 type TargetCommand struct {
 	BaseCommand
 
-	Organization    string      `short:"o" description:"Organization"`
-	Space           string      `short:"s" description:"Space"`
-	usage           interface{} `usage:"CF_NAME target [-o ORG] [-s SPACE]"`
-	relatedCommands interface{} `related_commands:"create-org, create-space, login, orgs, spaces"`
+	Organization    flag.ExistingOrgName `short:"o" description:"Organization"`
+	Space           string               `short:"s" description:"Space"`
+	usage           interface{}          `usage:"CF_NAME target [-o ORG] [-s SPACE]"`
+	relatedCommands interface{}          `related_commands:"create-org, create-space, login, orgs, spaces"`
 }
 
 func (cmd *TargetCommand) Execute(args []string) error {
@@ -99,13 +100,13 @@ func (cmd *TargetCommand) setOrgAndSpace() error {
 
 // setOrg sets organization
 func (cmd *TargetCommand) setOrg() error {
-	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.Organization)
+	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.Organization.String())
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
 	}
 
-	cmd.Config.SetOrganizationInformation(org.GUID, cmd.Organization)
+	cmd.Config.SetOrganizationInformation(org.GUID, cmd.Organization.String())
 	cmd.Config.UnsetSpaceInformation()
 
 	return nil

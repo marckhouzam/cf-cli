@@ -11,10 +11,10 @@ import (
 type OrgCommand struct {
 	BaseCommand
 
-	RequiredArgs    flag.Organization `positional-args:"yes"`
-	GUID            bool              `long:"guid" description:"Retrieve and display the given org's guid.  All other output for the org is suppressed."`
-	usage           interface{}       `usage:"CF_NAME org ORG [--guid]"`
-	relatedCommands interface{}       `related_commands:"org-users, orgs"`
+	RequiredArgs    flag.ExistingOrganization `positional-args:"yes"`
+	GUID            bool                      `long:"guid" description:"Retrieve and display the given org's guid.  All other output for the org is suppressed."`
+	usage           interface{}               `usage:"CF_NAME org ORG [--guid]"`
+	relatedCommands interface{}               `related_commands:"org-users, orgs"`
 }
 
 func (cmd OrgCommand) Execute(args []string) error {
@@ -31,7 +31,7 @@ func (cmd OrgCommand) Execute(args []string) error {
 }
 
 func (cmd OrgCommand) displayOrgGUID() error {
-	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.RequiredArgs.Organization)
+	org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.RequiredArgs.Organization.String())
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func (cmd OrgCommand) displayOrgSummary() error {
 		})
 	cmd.UI.DisplayNewline()
 
-	orgSummary, warnings, err := cmd.Actor.GetOrganizationSummaryByName(cmd.RequiredArgs.Organization)
+	orgSummary, warnings, err := cmd.Actor.GetOrganizationSummaryByName(cmd.RequiredArgs.Organization.String())
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err
