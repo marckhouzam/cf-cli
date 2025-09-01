@@ -8,9 +8,9 @@ import (
 type SpaceSSHAllowedCommand struct {
 	BaseCommand
 
-	RequiredArgs    flag.Space  `positional-args:"yes"`
-	usage           interface{} `usage:"CF_NAME space-ssh-allowed SPACE_NAME"`
-	relatedCommands interface{} `related_commands:"allow-space-ssh, ssh-enabled, ssh"`
+	RequiredArgs    flag.ExistingSpace `positional-args:"yes"`
+	usage           interface{}        `usage:"CF_NAME space-ssh-allowed SPACE_NAME"`
+	relatedCommands interface{}        `related_commands:"allow-space-ssh, ssh-enabled, ssh"`
 }
 
 func (cmd SpaceSSHAllowedCommand) Execute(args []string) error {
@@ -19,7 +19,7 @@ func (cmd SpaceSSHAllowedCommand) Execute(args []string) error {
 		return err
 	}
 
-	enabled, warnings, err := cmd.Actor.GetSpaceFeature(cmd.RequiredArgs.Space, cmd.Config.TargetedOrganization().GUID, "ssh")
+	enabled, warnings, err := cmd.Actor.GetSpaceFeature(cmd.RequiredArgs.Space.String(), cmd.Config.TargetedOrganization().GUID, "ssh")
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

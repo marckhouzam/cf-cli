@@ -11,10 +11,10 @@ import (
 type TargetCommand struct {
 	BaseCommand
 
-	Organization    flag.ExistingOrgName `short:"o" description:"Organization"`
-	Space           string               `short:"s" description:"Space"`
-	usage           interface{}          `usage:"CF_NAME target [-o ORG] [-s SPACE]"`
-	relatedCommands interface{}          `related_commands:"create-org, create-space, login, orgs, spaces"`
+	Organization    flag.ExistingOrgName   `short:"o" description:"Organization"`
+	Space           flag.ExistingSpaceName `short:"s" description:"Space"`
+	usage           interface{}            `usage:"CF_NAME target [-o ORG] [-s SPACE]"`
+	relatedCommands interface{}            `related_commands:"create-org, create-space, login, orgs, spaces"`
 }
 
 func (cmd *TargetCommand) Execute(args []string) error {
@@ -135,7 +135,7 @@ func (cmd *TargetCommand) setSpace() error {
 		return translatableerror.NoOrganizationTargetedError{BinaryName: cmd.Config.BinaryName()}
 	}
 
-	space, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space, cmd.Config.TargetedOrganization().GUID)
+	space, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space.String(), cmd.Config.TargetedOrganization().GUID)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		return err

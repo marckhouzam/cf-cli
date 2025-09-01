@@ -47,17 +47,17 @@ type LoginCommand struct {
 	Config        command.Config
 	ActorReloader ActorReloader
 
-	APIEndpoint       string               `short:"a" description:"API endpoint (e.g. https://api.example.com)"`
-	Organization      flag.ExistingOrgName `short:"o" description:"Org"`
-	Password          string               `short:"p" description:"Password"`
-	Space             string               `short:"s" description:"Space"`
-	SkipSSLValidation bool                 `long:"skip-ssl-validation" description:"Skip verification of the API endpoint. Not recommended!"`
-	SSO               bool                 `long:"sso" description:"Prompt for a one-time passcode to login"`
-	SSOPasscode       string               `long:"sso-passcode" description:"One-time passcode"`
-	Username          string               `short:"u" description:"Username"`
-	Origin            string               `long:"origin" description:"Indicates the identity provider to be used for login"`
-	usage             interface{}          `usage:"CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--origin ORIGIN]\n\nWARNING:\n   Providing your password as a command line option is highly discouraged\n   Your password may be visible to others and may be recorded in your shell history\n\nEXAMPLES:\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\n   CF_NAME login -u name@example.com -p \"my password\" (use quotes for passwords with a space)\n   CF_NAME login -u name@example.com -p \"\\\"password\\\"\" (escape quotes if used in password)\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)\n   CF_NAME login --origin ldap"`
-	relatedCommands   interface{}          `related_commands:"api, auth, target"`
+	APIEndpoint       string                 `short:"a" description:"API endpoint (e.g. https://api.example.com)"`
+	Organization      flag.ExistingOrgName   `short:"o" description:"Org"`
+	Password          string                 `short:"p" description:"Password"`
+	Space             flag.ExistingSpaceName `short:"s" description:"Space"`
+	SkipSSLValidation bool                   `long:"skip-ssl-validation" description:"Skip verification of the API endpoint. Not recommended!"`
+	SSO               bool                   `long:"sso" description:"Prompt for a one-time passcode to login"`
+	SSOPasscode       string                 `long:"sso-passcode" description:"One-time passcode"`
+	Username          string                 `short:"u" description:"Username"`
+	Origin            string                 `long:"origin" description:"Indicates the identity provider to be used for login"`
+	usage             interface{}            `usage:"CF_NAME login [-a API_URL] [-u USERNAME] [-p PASSWORD] [-o ORG] [-s SPACE] [--sso | --sso-passcode PASSCODE] [--origin ORIGIN]\n\nWARNING:\n   Providing your password as a command line option is highly discouraged\n   Your password may be visible to others and may be recorded in your shell history\n\nEXAMPLES:\n   CF_NAME login (omit username and password to login interactively -- CF_NAME will prompt for both)\n   CF_NAME login -u name@example.com -p pa55woRD (specify username and password as arguments)\n   CF_NAME login -u name@example.com -p \"my password\" (use quotes for passwords with a space)\n   CF_NAME login -u name@example.com -p \"\\\"password\\\"\" (escape quotes if used in password)\n   CF_NAME login --sso (CF_NAME will provide a url to obtain a one-time passcode to login)\n   CF_NAME login --origin ldap"`
+	relatedCommands   interface{}            `related_commands:"api, auth, target"`
 }
 
 func (cmd *LoginCommand) Setup(config command.Config, ui command.UI) error {
@@ -137,8 +137,8 @@ func (cmd *LoginCommand) Execute(args []string) error {
 		return fmt.Errorf("Error writing config: %s", err.Error())
 	}
 
-	if cmd.Organization != "" {
-		org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.Organization)
+	if cmd.Organization.String() != "" {
+		org, warnings, err := cmd.Actor.GetOrganizationByName(cmd.Organization.String())
 		cmd.UI.DisplayWarnings(warnings)
 		if err != nil {
 			return err
@@ -179,8 +179,8 @@ func (cmd *LoginCommand) Execute(args []string) error {
 		})
 		cmd.UI.DisplayNewline()
 
-		if cmd.Space != "" {
-			space, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space, targetedOrg.GUID)
+		if cmd.Space.String() != "" {
+			space, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space.String(), targetedOrg.GUID)
 			cmd.UI.DisplayWarnings(warnings)
 			if err != nil {
 				return err
@@ -440,13 +440,13 @@ func (cmd *LoginCommand) showStatus() {
 }
 
 func (cmd *LoginCommand) filterOrgsForSpace(allOrgs []resources.Organization) ([]resources.Organization, error) {
-	if cmd.Space == "" {
+	if cmd.Space.String() == "" {
 		return allOrgs, nil
 	}
 
 	var filteredOrgs []resources.Organization
 	for _, org := range allOrgs {
-		_, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space, org.GUID)
+		_, warnings, err := cmd.Actor.GetSpaceByNameAndOrganization(cmd.Space.String(), org.GUID)
 		cmd.UI.DisplayWarnings(warnings)
 		if err == nil {
 			filteredOrgs = append(filteredOrgs, org)
@@ -469,8 +469,8 @@ func (cmd *LoginCommand) promptChosenOrg(orgs []resources.Organization) (resourc
 	chosenOrgName, err := cmd.promptMenu(orgNames, "Select an org:", "Org")
 	if err != nil {
 		if invalidChoice, ok := err.(ui.InvalidChoiceError); ok {
-			if cmd.Space != "" {
-				return resources.Organization{}, translatableerror.OrganizationWithSpaceNotFoundError{Name: invalidChoice.Choice, SpaceName: cmd.Space}
+			if cmd.Space.String() != "" {
+				return resources.Organization{}, translatableerror.OrganizationWithSpaceNotFoundError{Name: invalidChoice.Choice, SpaceName: cmd.Space.String()}
 			}
 			return resources.Organization{}, translatableerror.OrganizationNotFoundError{Name: invalidChoice.Choice}
 		}

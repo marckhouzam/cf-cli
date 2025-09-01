@@ -8,9 +8,9 @@ import (
 type DisallowSpaceSSHCommand struct {
 	BaseCommand
 
-	RequiredArgs    flag.Space  `positional-args:"yes"`
-	usage           interface{} `usage:"CF_NAME disallow-space-ssh SPACE_NAME"`
-	relatedCommands interface{} `related_commands:"disable-ssh, space-ssh-allowed, ssh, ssh-enabled"`
+	RequiredArgs    flag.ExistingSpace `positional-args:"yes"`
+	usage           interface{}        `usage:"CF_NAME disallow-space-ssh SPACE_NAME"`
+	relatedCommands interface{}        `related_commands:"disable-ssh, space-ssh-allowed, ssh, ssh-enabled"`
 }
 
 func (cmd *DisallowSpaceSSHCommand) Execute(args []string) error {
@@ -25,7 +25,7 @@ func (cmd *DisallowSpaceSSHCommand) Execute(args []string) error {
 	}
 
 	targetedOrgGUID := cmd.Config.TargetedOrganization().GUID
-	inputSpace := cmd.RequiredArgs.Space
+	inputSpace := cmd.RequiredArgs.Space.String()
 
 	cmd.UI.DisplayTextWithFlavor("Disabling ssh support for space {{.Space}} as {{.CurrentUserName}}...", map[string]interface{}{
 		"Space":           inputSpace,

@@ -45,7 +45,7 @@ var _ = Describe("space-ssh-allowed command", func() {
 				SharedActor: fakeSharedActor,
 				Actor:       fakeActor,
 			},
-			RequiredArgs: flag.Space{Space: spaceName},
+			RequiredArgs: flag.ExistingSpace{Space: flag.ExistingSpaceName(spaceName)},
 		}
 
 		spaceSSHWarning = v7action.Warnings{"space-ssh-warning"}

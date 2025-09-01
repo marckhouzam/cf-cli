@@ -42,8 +42,8 @@ var _ = Describe("space command", func() {
 				SharedActor: fakeSharedActor,
 				Actor:       fakeActor,
 			},
-			RequiredArgs: flag.Space{
-				Space: "some-space",
+			RequiredArgs: flag.ExistingSpace{
+				Space: flag.ExistingSpaceName("some-space"),
 			},
 		}
 

@@ -81,6 +81,10 @@ type Space struct {
 	Space string `positional-arg-name:"SPACE" required:"true" description:"The space"`
 }
 
+type ExistingSpace struct {
+	Space ExistingSpaceName `positional-arg-name:"SPACE" required:"true" description:"The space"`
+}
+
 type Rename struct {
 	OldAppName ExistingAppName `positional-arg-name:"APP_NAME" required:"true" description:"The current app name"`
 	NewAppName string          `positional-arg-name:"NEW_APP_NAME" required:"true" description:"The new app name"`

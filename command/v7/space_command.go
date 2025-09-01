@@ -13,11 +13,11 @@ import (
 type SpaceCommand struct {
 	BaseCommand
 
-	RequiredArgs       flag.Space  `positional-args:"yes"`
-	GUID               bool        `long:"guid" description:"Retrieve and display the given space's guid.  All other output for the space is suppressed."`
-	SecurityGroupRules bool        `long:"security-group-rules" description:"Retrieve the rules for all the security groups associated with the space."`
-	usage              interface{} `usage:"CF_NAME space SPACE [--guid] [--security-group-rules]"`
-	relatedCommands    interface{} `related_commands:"set-space-isolation-segment, space-quota, space-users"`
+	RequiredArgs       flag.ExistingSpace `positional-args:"yes"`
+	GUID               bool               `long:"guid" description:"Retrieve and display the given space's guid.  All other output for the space is suppressed."`
+	SecurityGroupRules bool               `long:"security-group-rules" description:"Retrieve the rules for all the security groups associated with the space."`
+	usage              interface{}        `usage:"CF_NAME space SPACE [--guid] [--security-group-rules]"`
+	relatedCommands    interface{}        `related_commands:"set-space-isolation-segment, space-quota, space-users"`
 }
 
 func (cmd SpaceCommand) Execute(args []string) error {
@@ -26,7 +26,7 @@ func (cmd SpaceCommand) Execute(args []string) error {
 		return err
 	}
 
-	spaceName := cmd.RequiredArgs.Space
+	spaceName := cmd.RequiredArgs.Space.String()
 	targetedOrg := cmd.Config.TargetedOrganization()
 
 	if cmd.GUID {

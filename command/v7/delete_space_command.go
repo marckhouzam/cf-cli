@@ -8,10 +8,10 @@ import (
 type DeleteSpaceCommand struct {
 	BaseCommand
 
-	RequiredArgs flag.Space  `positional-args:"yes"`
-	Force        bool        `short:"f" description:"Force deletion without confirmation"`
-	Org          string      `short:"o" description:"Delete space within specified org"`
-	usage        interface{} `usage:"CF_NAME delete-space SPACE [-o ORG] [-f]"`
+	RequiredArgs flag.ExistingSpace   `positional-args:"yes"`
+	Force        bool                 `short:"f" description:"Force deletion without confirmation"`
+	Org          flag.ExistingOrgName `short:"o" description:"Delete space within specified org"`
+	usage        interface{}          `usage:"CF_NAME delete-space SPACE [-o ORG] [-f]"`
 }
 
 func (cmd DeleteSpaceCommand) Execute(args []string) error {
@@ -25,7 +25,7 @@ func (cmd DeleteSpaceCommand) Execute(args []string) error {
 		orgName = cmd.Config.TargetedOrganization().Name
 	} else {
 		err = cmd.SharedActor.CheckTarget(false, false)
-		orgName = cmd.Org
+		orgName = cmd.Org.String()
 	}
 
 	if err != nil {
@@ -62,7 +62,7 @@ func (cmd DeleteSpaceCommand) Execute(args []string) error {
 			"CurrentUser": user.Name,
 		})
 
-	warnings, err := cmd.Actor.DeleteSpaceByNameAndOrganizationName(cmd.RequiredArgs.Space, orgName)
+	warnings, err := cmd.Actor.DeleteSpaceByNameAndOrganizationName(cmd.RequiredArgs.Space.String(), orgName)
 	cmd.UI.DisplayWarnings(warnings)
 	if err != nil {
 		switch err.(type) {
@@ -78,7 +78,7 @@ func (cmd DeleteSpaceCommand) Execute(args []string) error {
 	cmd.UI.DisplayOK()
 
 	if cmd.Config.TargetedOrganization().Name == orgName &&
-		cmd.Config.TargetedSpace().Name == cmd.RequiredArgs.Space {
+		cmd.Config.TargetedSpace().Name == cmd.RequiredArgs.Space.String() {
 		cmd.Config.UnsetSpaceInformation()
 		cmd.UI.DisplayText("TIP: No space targeted, use '{{.CfTargetCommand}}' to target a space.",
 			map[string]interface{}{"CfTargetCommand": cmd.Config.BinaryName() + " target -s"})
