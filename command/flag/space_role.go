@@ -6,9 +6,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 )
 
-type SpaceRole struct {
-	Role string
-}
+type SpaceRole string
 
 func (SpaceRole) Complete(prefix string) []flags.Completion {
 	return completions([]string{"SpaceManager", "SpaceDeveloper", "SpaceAuditor", "SpaceSupporter"}, prefix, false)
@@ -17,13 +15,13 @@ func (SpaceRole) Complete(prefix string) []flags.Completion {
 func (s *SpaceRole) UnmarshalFlag(val string) error {
 	switch strings.ToLower(val) {
 	case "spaceauditor":
-		s.Role = "SpaceAuditor"
+		*s = "SpaceAuditor"
 	case "spacedeveloper":
-		s.Role = "SpaceDeveloper"
+		*s = "SpaceDeveloper"
 	case "spacemanager":
-		s.Role = "SpaceManager"
+		*s = "SpaceManager"
 	case "spacesupporter":
-		s.Role = "SpaceSupporter"
+		*s = "SpaceSupporter"
 	default:
 		return &flags.Error{
 			Type:    flags.ErrRequired,

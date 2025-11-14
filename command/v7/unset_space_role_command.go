@@ -32,7 +32,7 @@ func (cmd *UnsetSpaceRoleCommand) Execute(args []string) error {
 	}
 
 	cmd.UI.DisplayTextWithFlavor("Removing role {{.RoleType}} from user {{.TargetUserName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.CurrentUserName}}...", map[string]interface{}{
-		"RoleType":        cmd.Args.Role.Role,
+		"RoleType":        cmd.Args.Role,
 		"TargetUserName":  cmd.Args.Username,
 		"OrgName":         cmd.Args.Organization,
 		"SpaceName":       cmd.Args.Space,

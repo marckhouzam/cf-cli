@@ -37,7 +37,7 @@ func (cmd *SetSpaceRoleCommand) Execute(args []string) error {
 	}
 
 	cmd.UI.DisplayTextWithFlavor("Assigning role {{.RoleType}} to user {{.TargetUserName}} in org {{.OrgName}} / space {{.SpaceName}} as {{.CurrentUserName}}...", map[string]interface{}{
-		"RoleType":        cmd.Args.Role.Role,
+		"RoleType":        cmd.Args.Role,
 		"TargetUserName":  cmd.Args.Username,
 		"OrgName":         cmd.Args.Organization,
 		"SpaceName":       cmd.Args.Space,
@@ -66,7 +66,7 @@ func (cmd *SetSpaceRoleCommand) Execute(args []string) error {
 	if err != nil {
 		if _, ok := err.(ccerror.RoleAlreadyExistsError); ok {
 			cmd.UI.DisplayWarning("User '{{.TargetUserName}}' already has role '{{.RoleType}}' in org '{{.OrgName}}' / space '{{.SpaceName}}'.", map[string]interface{}{
-				"RoleType":       cmd.Args.Role.Role,
+				"RoleType":       cmd.Args.Role,
 				"TargetUserName": cmd.Args.Username,
 				"OrgName":        cmd.Args.Organization,
 				"SpaceName":      cmd.Args.Space,
@@ -91,7 +91,7 @@ func (cmd SetSpaceRoleCommand) validateFlags() error {
 }
 
 func convertSpaceRoleType(givenRole flag.SpaceRole) (constant.RoleType, error) {
-	switch strings.ToLower(givenRole.Role) {
+	switch strings.ToLower(string(givenRole)) {
 	case "spaceauditor":
 		return constant.SpaceAuditorRole, nil
 	case "spacemanager":

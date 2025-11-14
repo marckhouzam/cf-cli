@@ -4,7 +4,6 @@ import (
 	"code.cloudfoundry.org/cli/v8/actor/v7action"
 	"code.cloudfoundry.org/cli/v8/api/cloudcontroller/ccv3/constant"
 	"code.cloudfoundry.org/cli/v8/cf/errors"
-	"code.cloudfoundry.org/cli/v8/command/flag"
 	"code.cloudfoundry.org/cli/v8/command/translatableerror"
 	"code.cloudfoundry.org/cli/v8/command/v7/v7fakes"
 	"code.cloudfoundry.org/cli/v8/resources"
@@ -78,7 +77,7 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceDeveloper"}
+			cmd.Args.Role = "SpaceDeveloper"
 			cmd.Args.Username = "target-user-name"
 		})
 
@@ -103,7 +102,7 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 			cmd.Args.Username = "target-user-name"
 			cmd.Origin = "ldap"
 		})
@@ -129,14 +128,14 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 			cmd.Args.Username = "target-user-name"
 			cmd.IsClient = true
 		})
 
 		When("the role is space supporter", func() {
 			BeforeEach(func() {
-				cmd.Args.Role = flag.SpaceRole{Role: "SpaceSupporter"}
+				cmd.Args.Role = "SpaceSupporter"
 			})
 
 			It("deletes the space role correctly", func() {
@@ -176,7 +175,7 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 			cmd.Args.Username = "target-user-name"
 			cmd.Origin = "ldap"
 			cmd.IsClient = true
@@ -193,7 +192,7 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 			cmd.Args.Username = "target-user-name"
 
 			fakeActor.DeleteSpaceRoleReturns(
@@ -211,7 +210,7 @@ var _ = Describe("unset-space-role Command", func() {
 
 	When("invalid role arg is given", func() {
 		BeforeEach(func() {
-			cmd.Args.Role = flag.SpaceRole{Role: "Astronaut"}
+			cmd.Args.Role = "Astronaut"
 		})
 
 		It("returns an error", func() {
@@ -221,7 +220,7 @@ var _ = Describe("unset-space-role Command", func() {
 
 	When("getting the org fails", func() {
 		BeforeEach(func() {
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 
 			fakeActor.GetOrganizationByNameReturns(
 				resources.Organization{},
@@ -238,7 +237,7 @@ var _ = Describe("unset-space-role Command", func() {
 
 	When("getting the space fails", func() {
 		BeforeEach(func() {
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 
 			fakeActor.GetSpaceByNameAndOrganizationReturns(
 				resources.Space{},
@@ -257,7 +256,7 @@ var _ = Describe("unset-space-role Command", func() {
 		BeforeEach(func() {
 			cmd.Args.Organization = "some-org-name"
 			cmd.Args.Space = "some-space-name"
-			cmd.Args.Role = flag.SpaceRole{Role: "SpaceAuditor"}
+			cmd.Args.Role = "SpaceAuditor"
 			cmd.Args.Username = "target-user-name"
 
 			fakeActor.DeleteSpaceRoleReturns(

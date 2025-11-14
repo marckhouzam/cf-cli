@@ -39,31 +39,31 @@ var _ = Describe("SpaceRole", func() {
 
 	Describe("UnmarshalFlag", func() {
 		BeforeEach(func() {
-			spaceRole = SpaceRole{}
+			spaceRole = ""
 		})
 
 		It("accepts SpaceManager", func() {
 			err := spaceRole.UnmarshalFlag("spacemanager")
 			Expect(err).ToNot(HaveOccurred())
-			Expect(spaceRole).To(Equal(SpaceRole{Role: "SpaceManager"}))
+			Expect(spaceRole).To(Equal("SpaceManager"))
 		})
 
 		It("accepts SpaceDeveloper", func() {
 			err := spaceRole.UnmarshalFlag("Spacedeveloper")
 			Expect(err).ToNot(HaveOccurred())
-			Expect(spaceRole).To(Equal(SpaceRole{Role: "SpaceDeveloper"}))
+			Expect(spaceRole).To(Equal("SpaceDeveloper"))
 		})
 
 		It("accepts SpaceAuditor", func() {
 			err := spaceRole.UnmarshalFlag("spaceAuditor")
 			Expect(err).ToNot(HaveOccurred())
-			Expect(spaceRole).To(Equal(SpaceRole{Role: "SpaceAuditor"}))
+			Expect(spaceRole).To(Equal("SpaceAuditor"))
 		})
 
 		It("accepts SpaceSupporter", func() {
 			err := spaceRole.UnmarshalFlag("spaceSupporter")
 			Expect(err).ToNot(HaveOccurred())
-			Expect(spaceRole).To(Equal(SpaceRole{Role: "SpaceSupporter"}))
+			Expect(spaceRole).To(Equal("SpaceSupporter"))
 		})
 
 		It("errors on anything else", func() {
@@ -72,7 +72,7 @@ var _ = Describe("SpaceRole", func() {
 				Type:    flags.ErrRequired,
 				Message: `ROLE must be "SpaceManager", "SpaceDeveloper", "SpaceAuditor" or "SpaceSupporter"`,
 			}))
-			Expect(spaceRole.Role).To(BeEmpty())
+			Expect(spaceRole).To(BeEmpty())
 		})
 	})
 })
